@@ -5,8 +5,9 @@ import java.util.Enumeration;
 
 public class DataBaseClass {
     static String url = "jdbc:mysql://localhost:3306/payroll_Employewage";
-    static String userName="root";
-    static String password="Hariprasad@12";
+    static String userName = "root";
+    static String password = "Hariprasad@12";
+
     public static void fetchData(String quaryFetch) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -14,7 +15,7 @@ public class DataBaseClass {
             System.out.print("The error in the class -" + e);
         }
         try {
-            Connection connection =DriverManager.getConnection(url,userName,password);
+            Connection connection = DriverManager.getConnection(url, userName, password);
             Statement st = connection.createStatement();
 
             System.out.println("The fecting the data is started  \n");
@@ -33,24 +34,25 @@ public class DataBaseClass {
             System.out.println("The error at the Connection - " + e);
         }
     }
-    public static void set(){
+
+    public static void set() {
         try {
-            Connection connection =DriverManager.getConnection(url,userName,password);
+            Connection connection = DriverManager.getConnection(url, userName, password);
             // Statement st = connection.createStatement();
 
-            String quary ="update payroll_Employewage set salary = ? where id = ? ";
+            String quary = "update payroll_Employewage set salary = ? where id = ? ";
             // " insert into employee_payroll(name,salary,start) values(?,?,?)";
             System.out.println("--------The quary point for the updation ------ \n");
             PreparedStatement st = connection.prepareStatement(quary);
-            st.setDouble(1,3600000);
-            st.setInt(2,4);
+            st.setDouble(1, 3600000);
+            st.setInt(2, 4);
 
             int count = st.executeUpdate();
-            System.out.println("The no row affected + "+ count);
+            System.out.println("The no row affected + " + count);
             st.close();
             connection.close();
         } catch (SQLException e) {
-            System.out.println("error - "+ e);
+            System.out.println("error - " + e);
         }
     }
 
@@ -61,15 +63,15 @@ public class DataBaseClass {
             System.out.print("The error in the class -" + e);
         }
         try {
-            Connection connection =DriverManager.getConnection(url,userName,password);
+            Connection connection = DriverManager.getConnection(url, userName, password);
             Statement st = connection.createStatement();
             System.out.println("The fecting the data is started  \n");
-            ResultSet rs =st.executeQuery(quary);
+            ResultSet rs = st.executeQuery(quary);
             //The result we want in the table formatte so we use RS
             //fetch the data
             System.out.println("The result set - " + rs);
             while (rs.next()) {
-                Double userData =rs.getDouble(1 ) ;
+                Double userData = rs.getDouble(1);
                 System.out.println(userData);
             }
             System.out.println("Closing point of the Fetch method");
@@ -81,14 +83,14 @@ public class DataBaseClass {
     }
 
 
-    public static void insertDataUsingPreparedStatment(){
+    public static void insertDataUsingPreparedStatment() {
         try {
 
             Connection connection = DriverManager.getConnection(url, userName, password);
             // Statement st = connection.createStatement();
             try {
                 connection.setAutoCommit(false);
-                int id = 7;
+                int id = 8;
                 String name = "Rajeswari2";
                 double salary = 45000;
                 Date startDate = new Date(2022, 8, 20);
@@ -119,13 +121,34 @@ public class DataBaseClass {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("error - "+ e);
+            System.out.println("error - " + e);
         }
     }
+
+    public static void Delete(int id) {
+        try {
+            Connection connection = DriverManager.getConnection(url, userName, password);
+            // Statement st = connection.createStatement();
+            String quary = "delete from payroll_Employewage where id = ? ";
+            // " insert into employee_payroll(name,salary,start) values(?,?,?)";
+            System.out.println("--------The quary point for the updation ------ \n");
+            PreparedStatement st = connection.prepareStatement(quary);
+            st.setInt(1, id);
+
+            int count = st.executeUpdate();
+            System.out.println("The no row affected + " + count);
+            st.close();
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println("error - " + e);
+        }
+    }
+
     public static void main(String[] args) {
         //  fetchData("SELECT * FROM payroll_Employewage WHERE startDate BETWEEN CAST('2021-01-01'AS DATE) AND DATE(NOW())");
 //        set();
-        insertDataUsingPreparedStatment();
+//        insertDataUsingPreparedStatment();
+        Delete(8);
         //fetchMethods("SELECT SUM(salary) FROM payroll_Employewage WHERE Gender = 'F' ");
         fetchData("select * from payroll_Employewage");
     }
